@@ -69,7 +69,7 @@ public class RequestBodyJsonController {
     public HelloData requestBodyJsonV5(@RequestBody HelloData data) { //ResponseBody가 있으면 HttpmessageConverter가 들어올 때도 적용이 되지만 나갈 때도 적용 된다!
         log.info("username={}, age={}", data.getUsername(), data.getAge());
         return data;
-    }
+    } // Json이 객체가 됐다가 객체가 다시 Json이 됨!
 }
 
 
