@@ -1,7 +1,9 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -72,6 +74,39 @@ public class RequestParamController {
         log.info("userName={}, age={}", username, age);
         return "ok";
     } // defaultValue는 빈 문자가 들어와도 설정한 기본값 적용됨! (/request-param-default?username=)
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData){
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        return "ok";
+    } // HelloData 객체가 생성되고, 요청 파라미터의 값도 모두 들어가 있음 !
+    /*
+    1) HelloData 객체 생성
+    2) 요청 파라미터의 이름으로 HelloData 객체의 프로퍼티를 찾고, 해당 프로퍼티의 setter를 호출해서 파라미터의 값을 입력
+     */
+
+    /*
+    public String modelAttributeV1(@RequestParam String username, @RequestParam int age){
+
+        HelloData helloData = new HelloData();
+        helloData.setUsername(username);
+        helloData.setAge(age);
+
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData={}", helloData); // HelloData.java의 @Data 덕분에 toString 자동으로 만들어 줌 !
+        return "ok";
+        // @ModelAttribute를 통해 이 코드를 위처럼 쓸 수 있다!
+    */
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData){
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        return "ok";
+    } // @RequestParam V4처럼 @ModelAttribute도 생략 가능!
+    // 스프링은 해당 생략시 String, int, Integer같은 단순 타입은 @RequestParam, 나머지는 @ModelAttribute 적용!(argument resolver로 지정해둔 타입 예외)
+
 
 }
 
